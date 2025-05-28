@@ -1,0 +1,8 @@
+ # 3.  LASSO回归
+    model_lasso <- cv.glmnet(x = as.matrix(train[, c("变量"]), 
+                             y = train$BIO, 
+                             alpha = 1, nfolds = 3) # 设置 nfolds=3
+    best_lambda_lasso <- model_lasso$lambda.min
+    test$predicted_lasso <- predict(model_lasso, s = best_lambda_lasso, 
+                                    newx = as.matrix(test[, c("变量")]))
+    LASSO_accuracy[n] <- (cor(test$BIO, test$predicted_lasso)^2)
