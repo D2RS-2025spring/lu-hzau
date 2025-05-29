@@ -10,3 +10,12 @@
     model_quad <- lm(BIO ~ poly(变量, 2), data = train) # 将公式省略
     test$predicted_quad <- predict(model_quad, newdata = test)
     quad_accuracy[n] <- (cor(test$BIO, test$predicted_quad)^2)
+  # 4.RIDGE回归
+    model_ridge <- cv.glmnet(x = as.matrix(train[, c("变量")]), 
+                             y = train$BIO, 
+                             alpha = 0, nfolds = 3) # 设置 nfolds=3
+    best_lambda_ridge <- model_ridge$lambda.min
+    test$predicted_ridge <- predict(model_ridge, s = best_lambda_ridge, 
+                                    newx = as.matrix(test[, c("变量")]))
+    RIDGE_accuracy[n] <- (cor(test$BIO, test$predicted_ridge)^2)
+  }
